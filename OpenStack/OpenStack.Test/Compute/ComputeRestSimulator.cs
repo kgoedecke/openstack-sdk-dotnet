@@ -326,7 +326,7 @@ namespace OpenStack.Test.Compute
             var name = (string)obj["server"]["name"];
             var srv = new ComputeServer(Guid.NewGuid().ToString(), name, "12345", new Uri("http://test.com"), new Uri("http://test.com"), new Dictionary<string, string>());
             this.Servers.Add(srv);
-            var responsePayload = GenerateCreateServeResponse(srv);
+            var responsePayload = GenerateCreateServerResponse(srv);
 
             return TestHelper.CreateResponse(HttpStatusCode.Accepted, new Dictionary<string, string>(), responsePayload.ConvertToStream());
         }
@@ -435,7 +435,7 @@ namespace OpenStack.Test.Compute
             }
         }
 
-        private string GenerateItemsPayload(IEnumerable<ComputeItem> items, string collectionName )
+        private string GenerateItemsPayload(IEnumerable<ComputeItem> items, string collectionName)
         {
             var payload = new StringBuilder();
             payload.Append(string.Format("{{ \"{0}\": [",collectionName));
@@ -552,7 +552,7 @@ namespace OpenStack.Test.Compute
                 image.PermanentUri.AbsoluteUri, image.Id);
         }
 
-        internal string GenerateCreateServeResponse(ComputeServer server)
+        internal string GenerateCreateServerResponse(ComputeServer server)
         {
             var payloadFixture = @"{{
                 ""server"": {{
