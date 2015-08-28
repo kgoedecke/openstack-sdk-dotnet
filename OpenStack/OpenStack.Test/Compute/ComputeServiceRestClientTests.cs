@@ -440,6 +440,27 @@ namespace OpenStack.Test.Compute
             Assert.IsTrue(respContent.Length > 0);
         }
 
+        [TestMethod]
+        public async Task CanGetServersWithStatus()
+        {
+            var serverId = "12345";
+            var server = new ComputeServer(serverId, "tiny",
+                new Uri("http://testcomputeendpoint.com/v2/1234567890/servers/1"),
+                new Uri("http://testcomputeendpoint.com/1234567890/servers/1"), new Dictionary<string, string>());
+
+            server.Status = ComputeServerStatus.Reboot;
+            this.simulator.Servers.Add(server);
+
+            var client = new ComputeServiceRestClient(GetValidContext(), this.ServiceLocator);
+
+            var resp = await client.GetServers(new ComputeServerStatus[] { ComputeServerStatus.Reboot });
+
+            Assert.AreEqual(HttpStatusCode.OK, resp.StatusCode);
+
+            var respContent = TestHelper.GetStringFromStream(resp.Content);
+            Assert.IsTrue(respContent.Length > 0);
+        }
+
         #endregion
 
         #region Get Server Test

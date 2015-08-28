@@ -56,6 +56,8 @@ namespace OpenStack.Test.Compute
 
         public Func<Task<IEnumerable<ComputeServer>>> GetServersDelegate { get; set; }
 
+        public Func<ComputeServerStatus[], Task<IEnumerable<ComputeServer>>> GetServersWithStatusDelegate { get; set; }
+
         public Func<string, Task<ComputeKeyPair>> GetKeyPairDelegate { get; set; }
 
         public Func<Task<IEnumerable<ComputeKeyPair>>> GetKeyPairsDelegate { get; set; } 
@@ -118,6 +120,11 @@ namespace OpenStack.Test.Compute
         public async Task<IEnumerable<ComputeServer>> GetServers()
         {
             return await this.GetServersDelegate();
+        }
+
+        public async Task<IEnumerable<ComputeServer>> GetServers(ComputeServerStatus[] serverStatus)
+        {
+            return await this.GetServersWithStatusDelegate(serverStatus);
         }
 
         public async Task<ComputeServer> GetServer(string serverId)

@@ -92,6 +92,12 @@ namespace OpenStack.Compute
         Task<IEnumerable<ComputeServer>> GetServers();
 
         /// <summary>
+        /// Gets a list of servers that are in certain statuses from the remote OpenStack instance.
+        /// </summary>
+        /// <returns>An HTTP response from the remote server.</returns>
+        Task<IEnumerable<ComputeServer>> GetServers(ComputeServerStatus[] serverStatus);
+
+        /// <summary>
         /// Get the server with the given id from the remote OpenStack instance.
         /// </summary>
         /// <param name="serverId">The id of the server.</param>

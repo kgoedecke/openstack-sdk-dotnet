@@ -258,6 +258,23 @@ namespace OpenStack.Compute
         }
 
         /// <inheritdoc/>
+        public async Task<IEnumerable<ComputeServer>> GetServers(ComputeServerStatus[] serverStatus)
+        {
+            var client = this.GetRestClient();
+            var resp = await client.GetServers(serverStatus);
+            
+            if (resp.StatusCode != HttpStatusCode.OK && resp.StatusCode != HttpStatusCode.NonAuthoritativeInformation)
+            {
+                throw new InvalidOperationException(string.Format("Failed to get compute images. The remote server returned the following status code: '{0}'.", resp.StatusCode));
+            }
+            
+            var converter = this.ServiceLocator.Locate<IComputeServerPayloadConverter>();
+            var servers = converter.ConvertServers(await resp.ReadContentAsStringAsync());
+
+            return servers;
+        }
+
+        /// <inheritdoc/>
         public async Task<ComputeServer> GetServer(string serverId)
         {
             var client = this.GetRestClient();

@@ -79,6 +79,13 @@ namespace OpenStack.Compute
         }
 
         /// <inheritdoc/>
+        public async Task<IEnumerable<ComputeServer>> GetServers(ComputeServerStatus[] computeServerStatus)
+        {
+            var client = this.GetPocoClient();
+            return await client.GetServers(computeServerStatus);
+        }
+
+        /// <inheritdoc/>
         public async Task<ComputeServer> GetServer(string serverId)
         {
             serverId.AssertIsNotNullOrEmpty("serverId", "Cannot get compute server with a null or empty id.");

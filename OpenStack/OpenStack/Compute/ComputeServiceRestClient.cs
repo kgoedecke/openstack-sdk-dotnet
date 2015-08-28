@@ -25,6 +25,7 @@ namespace OpenStack.Compute
     using OpenStack.Common;
     using OpenStack.Common.ServiceLocation;
     using System.Net.Http;
+    using System.Linq;
 
     /// <inheritdoc/>
     internal class ComputeServiceRestClient : OpenStackServiceRestClientBase, IComputeServiceRestClient
@@ -75,6 +76,18 @@ namespace OpenStack.Compute
 
             client.Uri = CreateRequestUri(this.Context.PublicEndpoint, ServersUrlMoniker);
             client.Method = HttpMethod.Get;
+
+            return await client.SendAsync();
+        }
+
+        // TODO: Add comments
+        public async Task<IHttpResponseAbstraction> GetServers(ComputeServerStatus[] serverStatus)
+        {
+            var client = this.GetHttpClient(this.Context);
+            var getParams = serverStatus.ToDictionary(key => "status", value => value.ToString());
+
+            client.Method = HttpMethod.Get;
+            client.Uri = CreateRequestUri(this.Context.PublicEndpoint, getParams, ServersUrlMoniker);
 
             return await client.SendAsync();
         }

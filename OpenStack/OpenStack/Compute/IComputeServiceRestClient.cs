@@ -111,6 +111,12 @@ namespace OpenStack.Compute
         Task<IHttpResponseAbstraction> GetServers();
 
         /// <summary>
+        /// Gets a list of servers that are in certain statuses from the remote OpenStack instance.
+        /// </summary>
+        /// <returns>An HTTP response from the remote server.</returns>
+        Task<IHttpResponseAbstraction> GetServers(ComputeServerStatus[] serverStatus);
+
+        /// <summary>
         /// Gets a server from the remote OpenStack instance.
         /// </summary>
         /// <param name="serverId">The id of the server to get.</param>

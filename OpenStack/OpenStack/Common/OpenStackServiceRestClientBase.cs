@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using OpenStack.Common.Http;
 using OpenStack.Common.ServiceLocation;
+using System.Linq;
 
 namespace OpenStack.Common
 {
@@ -66,6 +67,22 @@ namespace OpenStack.Common
             var temp = new List<string> { endpoint.AbsoluteUri.TrimEnd('/') };
             temp.AddRange(values);
             return new Uri(string.Join("/", temp.ToArray()));
+        }
+
+        /// <summary>
+        /// Creates a Uri with GET parameters for making requests to the remote service.
+        /// </summary>
+        /// <param name="endpoint">The root endpoint to use in the request.</param>
+        /// <param name="getParams">GET parameters for the request.</param>
+        /// <param name="values">The additional parameters to add to the request.</param>
+        /// <returns>A complete request Uri with GET Parameters at the end.</returns>
+        // TODO: Discuss if this is proper solution
+        internal Uri CreateRequestUri(Uri endpoint, IDictionary<string, string> getParams, params string[] values)
+        {
+            var temp = new List<string> { endpoint.AbsoluteUri.TrimEnd('/') };
+            temp.AddRange(values);
+            string baseUri = string.Join("/", temp.ToArray());
+            return new Uri(baseUri + '?' + string.Join("&", getParams.Select(p => p.Key + '=' + p.Value).ToArray()));
         }
 
         /// <summary>

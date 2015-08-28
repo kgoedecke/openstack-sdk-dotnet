@@ -273,6 +273,39 @@ namespace OpenStack.Test.Compute
         }
 
         [TestMethod]
+        public async Task CanGetServersWithStatus()
+        {
+            var expServer1 = new ComputeServer("1", "srv1",
+                new Uri("http://testcomputeendpoint.com/v2/1234567890/servers/1"),
+                new Uri("http://testcomputeendpoint.com/1234567890/servers/1"), new Dictionary<string, string>());
+            expServer1.Status = ComputeServerStatus.Reboot;
+
+            var expServer2 = new ComputeServer("2", "srv2",
+                new Uri("http://testcomputeendpoint.com/v2/1234567890/servers/1"),
+                new Uri("http://testcomputeendpoint.com/1234567890/servers/1"), new Dictionary<string, string>());
+            expServer2.Status = ComputeServerStatus.Reboot;
+
+            var expServer3 = new ComputeServer("3", "srv3",
+                new Uri("http://testcomputeendpoint.com/v2/1234567890/servers/1"),
+                new Uri("http://testcomputeendpoint.com/1234567890/servers/1"), new Dictionary<string, string>());
+            expServer3.Status = ComputeServerStatus.Active;
+
+            var servers = new List<ComputeServer>() { expServer1, expServer2 };
+
+            // TODO: Look into this! I dont get it...!!!
+            this.ServicePocoClient.GetServersWithStatusDelegate = (x) => Task.Factory.StartNew(() => (IEnumerable<ComputeServer>)servers);
+
+            var client = new ComputeServiceClient(GetValidCreds(), "Nova", CancellationToken.None, this.ServiceLocator);
+            var resp = await client.GetServers(new ComputeServerStatus[] { ComputeServerStatus.Reboot });
+            Assert.IsNotNull(resp);
+
+            var respFlavors = resp.ToList();
+            Assert.AreEqual(2, respFlavors.Count());
+            Assert.AreEqual(expServer1.Status, respFlavors[0].Status);
+            Assert.AreEqual(expServer2.Status, respFlavors[1].Status);
+        }
+
+        [TestMethod]
         public async Task CanGetServer()
         {
             var serverId = "12345";
