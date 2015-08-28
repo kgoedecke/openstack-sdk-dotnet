@@ -292,8 +292,14 @@ namespace OpenStack.Test.Compute
 
             var servers = new List<ComputeServer>() { expServer1, expServer2 };
 
-            // TODO: Look into this! I dont get it...!!!
-            this.ServicePocoClient.GetServersWithStatusDelegate = (x) => Task.Factory.StartNew(() => (IEnumerable<ComputeServer>)servers);
+            this.ServicePocoClient.GetServersWithStatusDelegate = (serverStatus) =>
+                Task.Factory.StartNew(
+                    () => (IEnumerable<ComputeServer>)servers.FindAll(
+                        (computeServer) =>
+                            { return (computeServer.Status == ComputeServerStatus.Reboot); } 
+                        )
+            );
+
 
             var client = new ComputeServiceClient(GetValidCreds(), "Nova", CancellationToken.None, this.ServiceLocator);
             var resp = await client.GetServers(new ComputeServerStatus[] { ComputeServerStatus.Reboot });
