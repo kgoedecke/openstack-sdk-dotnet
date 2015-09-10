@@ -239,7 +239,7 @@ namespace OpenStack.Compute
         }
 
 		/// <inheritdoc/>
-		public async Task<IHttpResponseAbstraction> RebootServer(string serverId, string rebootType)
+		public async Task<IHttpResponseAbstraction> RebootServer(string serverId, ComputeServerRebootType rebootType)
 		{
 			var client = this.GetHttpClient(this.Context);
 
@@ -340,11 +340,10 @@ namespace OpenStack.Compute
 		/// </summary>
 		/// <param name="rebootType">Can either be SOFT or HARD reboot.</param>
 		/// <returns>A json encoded request body.</returns>
-		internal string GenerateRebootServerRequestBody(string rebootType)
+		internal string GenerateRebootServerRequestBody(ComputeServerRebootType rebootType)
 		{
 			dynamic reboot = new System.Dynamic.ExpandoObject();
-			reboot.type = rebootType;
-				
+			reboot.type = (rebootType == ComputeServerRebootType.Hard_Reboot) ? "HARD" : "SOFT";
 			dynamic body = new System.Dynamic.ExpandoObject();
 			body.reboot = reboot;
 			return JToken.FromObject(body).ToString();

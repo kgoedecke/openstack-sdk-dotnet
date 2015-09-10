@@ -301,6 +301,12 @@ namespace OpenStack.Test.Compute
             {
                 return TestHelper.CreateResponse(HttpStatusCode.Accepted, new Dictionary<string, string>());
             }
+            if (body["reboot"] != null && body["reboot"]["type"] != null)
+            {
+                // Make this generic for soft and hard reboot
+                this.Servers.FirstOrDefault().Status = ComputeServerStatus.Hard_Reboot;
+                return TestHelper.CreateResponse(HttpStatusCode.Accepted, new Dictionary<string, string>());
+            }
 
             throw new NotImplementedException();
         }

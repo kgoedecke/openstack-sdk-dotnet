@@ -38,6 +38,8 @@ namespace OpenStack.Test.Compute
 
         public Func<string, Task> DeleteServerDelegate { get; set; }
 
+        public Func<string, ComputeServerRebootType, Task> RebootServerDelegate { get; set; }
+
         public Func<string, Task<IDictionary<string,string>>> GetImageMetadataDelegate { get; set; }
 
         public Func<string, IDictionary<string, string>, Task> UpdateImageMetadataDelegate { get; set; }
@@ -155,6 +157,11 @@ namespace OpenStack.Test.Compute
         public async Task<IEnumerable<ComputeFlavor>> GetFlavors()
         {
             return await this.GetFlavorsDelegate();
+        }
+
+        public async Task RebootServer(string serverId, ComputeServerRebootType rebootType)
+        {
+            await this.RebootServerDelegate(serverId, rebootType);
         }
     }
 

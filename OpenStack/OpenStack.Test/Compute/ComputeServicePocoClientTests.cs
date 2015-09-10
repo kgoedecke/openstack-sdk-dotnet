@@ -524,6 +524,21 @@ namespace OpenStack.Test.Compute
 
         #endregion
 
+        #region Reboot Server Tests
+
+        [TestMethod]
+        public async Task CanHardRebootServer()
+        {
+            var restResp = new HttpResponseAbstraction(new MemoryStream(), new HttpHeadersAbstraction(),
+                HttpStatusCode.OK);
+            this.ComputeServiceRestClient.Responses.Enqueue(restResp);
+
+            var client = new ComputeServicePocoClient(GetValidContext(), this.ServiceLocator);
+            await client.RebootServer("12345", ComputeServerRebootType.Hard_Reboot);
+        }
+
+        #endregion
+
         #region Delete Compute Server Tests
 
         [TestMethod]

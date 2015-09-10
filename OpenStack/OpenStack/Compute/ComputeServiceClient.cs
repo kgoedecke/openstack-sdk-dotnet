@@ -229,11 +229,10 @@ namespace OpenStack.Compute
         }
 
 		/// <inheritdoc/>
-		public async Task RebootServer(string serverId, string rebootType)
+		public async Task RebootServer(string serverId, ComputeServerRebootType rebootType)
 		{
 			serverId.AssertIsNotNullOrEmpty("serverId", "Cannot reboot a server with a null or empty id.");
-			rebootType.AssertIsNotNullOrEmpty("rebootType", "Cannot reboot a server with an null or empty reboot type.");
-
+			rebootType.AssertIsNotNull("rebootType", "Cannot reboot a server with an null or empty reboot type.");
 			var client = this.GetPocoClient();
 			await client.RebootServer(serverId, rebootType);
 		}

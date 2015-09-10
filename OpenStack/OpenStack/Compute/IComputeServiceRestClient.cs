@@ -101,7 +101,7 @@ namespace OpenStack.Compute
 		/// <param name="serverId">The id of the server.</param>
 		/// <param name="rebootType">Type of the reboot (hard or soft).</param>
 		/// <returns>An HTTP response from the remote server.</returns>
-		Task<IHttpResponseAbstraction> RebootServer(string serverId, string rebootType);
+		Task<IHttpResponseAbstraction> RebootServer(string serverId, ComputeServerRebootType rebootType);
 
 
         /// <summary>

@@ -14,6 +14,7 @@
 // limitations under the License.
 // ============================================================================ */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OpenStack.Common.Http;
@@ -125,6 +126,16 @@ namespace OpenStack.Test.Compute
 
         /// <inheritdoc/>
         public Task<IHttpResponseAbstraction> DeleteServer(string serverId)
+        {
+            return Task.Factory.StartNew(() => Responses.Dequeue());
+        }
+
+        public Task<IHttpResponseAbstraction> RebootServer(string serverId, ComputeServerRebootType rebootType)
+        {
+            return Task.Factory.StartNew(() => Responses.Dequeue());
+        }
+
+        public Task<IHttpResponseAbstraction> GetServers(ComputeServerStatus[] serverStatus)
         {
             return Task.Factory.StartNew(() => Responses.Dequeue());
         }

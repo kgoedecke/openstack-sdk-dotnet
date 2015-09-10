@@ -217,7 +217,7 @@ namespace OpenStack.Compute
 
 		/// <inheritdoc/>
 		/// TODO: Add Progress, see CreateServer
-		public async Task RebootServer(string serverId, string rebootType)
+		public async Task RebootServer(string serverId, ComputeServerRebootType rebootType)
 		{
 			var client = this.GetRestClient();
 			var resp = await client.RebootServer(serverId, rebootType);

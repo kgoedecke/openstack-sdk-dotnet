@@ -585,6 +585,28 @@ namespace OpenStack.Test.Compute
 
         #endregion
 
+        #region Reboot Server Test
+
+        [TestMethod]
+        public async Task CanHardRebootServer()
+        {
+            var serverId = "12345";
+            var server = new ComputeServer(serverId, "tiny",
+                new Uri("http://testcomputeendpoint.com/v2/1234567890/servers/1"),
+                new Uri("http://testcomputeendpoint.com/1234567890/servers/1"), new Dictionary<string, string>());
+            this.simulator.Servers.Add(server);
+
+            var client = new ComputeServiceRestClient(GetValidContext(), this.ServiceLocator);
+
+            var resp = await client.RebootServer(serverId, ComputeServerRebootType.Hard_Reboot);
+
+            Assert.AreEqual(HttpStatusCode.Accepted, resp.StatusCode);
+            Assert.AreEqual(1, this.simulator.Servers.Count);
+            Assert.AreEqual(server.Status, ComputeServerStatus.Hard_Reboot);
+        }
+
+        #endregion
+
         #region Delete Server Test
 
         [TestMethod]

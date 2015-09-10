@@ -155,6 +155,22 @@ namespace OpenStack.Test.Compute
         }
 
         [TestMethod]
+        public async Task CanHardRebootServer()
+        {
+            this.ServicePocoClient.RebootServerDelegate = async (serverId, rebootType) =>
+            {
+                await Task.Run(() =>
+                {
+                    Assert.AreEqual(serverId, "12345");
+                    Assert.AreEqual(rebootType, ComputeServerRebootType.Hard_Reboot);
+                });
+            };
+
+            var client = new ComputeServiceClient(GetValidCreds(), "Nova", CancellationToken.None, this.ServiceLocator);
+            await client.RebootServer("12345", ComputeServerRebootType.Hard_Reboot);
+        }
+
+        [TestMethod]
         public async Task CanCreateServerWithoutKeyName()
         {
             var serverName = "MyServer";

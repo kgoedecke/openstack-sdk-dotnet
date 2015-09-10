@@ -75,7 +75,7 @@ namespace OpenStack.Compute
 		/// <param name="serverId">The id of the server.</param>
 		/// <param name="rebootType">Either hard or soft reboot.</param>
 		/// <returns>A server object.</returns>
-		Task RebootServer(string serverId, string rebootType);
+		Task RebootServer(string serverId, ComputeServerRebootType rebootType);
 
 
         /// <summary>
